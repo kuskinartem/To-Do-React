@@ -6,6 +6,7 @@ import axios from 'axios';
 
 function App() {
   const [todos, setTodos] = useState([])
+  todos.sort((a, b) => (a.isCheck > b.isCheck) ? 1 : a.isCheck < b.isCheck ? -1 : 0);
   useEffect(() => {
     fetchPost()
   })
