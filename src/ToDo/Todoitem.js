@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Context from '../context';
-import axios from 'axios';
 import done from '../img/done.svg';
 import cancel from '../img/cancel.svg';
 import Delete from '../img/delete.svg';
 import edit from '../img/edit.svg'
+import { changeText } from '../request/TaskServes'
+
+
 
 
 const styles = {
@@ -23,7 +25,7 @@ const styles = {
 
 }
 
-function Todoitem({ todo, index, onChange, setTodo, setTodos, todos }) {
+const Todoitem = ({ todo, index, onChange, setTodo, setTodos, todos }) => {
   const { removeTodo } = useContext(Context)
   const classes = [];
 
@@ -34,31 +36,33 @@ function Todoitem({ todo, index, onChange, setTodo, setTodos, todos }) {
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
 
-  function handleEditInputChange(e) {
+  const handleEditInputChange = (e) => {
     setCurrentTodo({ ...currentTodo, text: e.target.value });
   }
 
-  function handleEditClick() {
+  const handleEditClick = () => {
     setIsEditing(true);
     setCurrentTodo({ ...todo });
   }
 
-  function handleFormSubmit(e) {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     setTodo(todo.text);
   }
 
-  const doneEditTask = async (_id, text) => {
-    const resp = await axios.patch(`http://localhost:8000/tasks/${_id}`, {
-      text: currentTodo.text
-    })
-    setTodos(todos.map(todo => {
-      if (todo._id === _id) {                                                   
-        todo.text = resp.text;
-      }
-      return todo;
-    }))
-    setIsEditing(false)
+  const doneEditTask = async (_id) => {
+    try {
+      const resp = await changeText(_id, currentTodo)
+      setTodos(todos.map(todo => {
+        if (todo._id === _id) {
+          todo.text = resp.text;
+        }
+        return todo;
+      }))
+      setIsEditing(false)
+    } catch {
+      console.error('change error');
+    }
   }
 
   return (
@@ -66,40 +70,40 @@ function Todoitem({ todo, index, onChange, setTodo, setTodos, todos }) {
 
       <div>
         <div>
-          
+
           {isEditing ? (
             <div>
-            <form onSubmit={doneEditTask} className='form'>
-              <input
-                name="editTodo"
-                type="text"
-                placeholder="Edit todo"
-                value={currentTodo.text}
-                onChange={handleEditInputChange}
-              />
-              <button type="submit" onClick={() => doneEditTask(todo._id, todo.text)}>
-              <img src={done} alt='' />
-              </button>
-              <button onClick={() => setIsEditing(false)}>
-                <img src={cancel} alt=''/>
-              </button>
-            </form>
+              <form onSubmit={doneEditTask} className='form'>
+                <input
+                  name="editTodo"
+                  type="text"
+                  placeholder="Edit todo"
+                  value={currentTodo.text}
+                  onChange={handleEditInputChange}
+                />
+                <button type="submit" onClick={() => doneEditTask(todo._id, todo.text)}>
+                  <img src={done} alt='' />
+                </button>
+                <button onClick={() => setIsEditing(false)}>
+                  <img src={cancel} alt='' />
+                </button>
+              </form>
             </div>
           ) : (
             <div>
-            <form onSubmit={handleFormSubmit}>
-              <span className={classes.join(' ')}>
-                <input
-                  type="checkbox"
-                  checked={todo.isCheck}
-                  style={styles.input}
-                  onChange={() => onChange(todo._id, todo.isCheck)} />
-                <strong>{index + 1}</strong>
-                &nbsp;
-                {todo.text}
-              </span>
-            </form>
-          </div>
+              <form onSubmit={handleFormSubmit}>
+                <span className={classes.join(' ')}>
+                  <input
+                    type="checkbox"
+                    checked={todo.isCheck}
+                    style={styles.input}
+                    onChange={() => onChange(todo._id, todo.isCheck)} />
+                  <strong>{index + 1}</strong>
+                  &nbsp;
+                  {todo.text}
+                </span>
+              </form>
+            </div>
           )}
         </div>
       </div>
@@ -108,7 +112,7 @@ function Todoitem({ todo, index, onChange, setTodo, setTodos, todos }) {
           <img src={edit} alt='' />
         </button>
         <button className='rm' onClick={() => removeTodo(todo._id)}>
-          <img src={Delete} alt=''/>
+          <img src={Delete} alt='' />
         </button>
       </div>
     </li>

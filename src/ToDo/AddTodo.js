@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
-
-function AddTodo({ onCreate }) {
+const AddTodo = ({ onCreate }) => {
   const [value, setValue] = useState('')
 
-  function submitHandler(event) {
+  const submitHandler = (event) => {
     event.preventDefault()
 
     if (value.trim()) {
