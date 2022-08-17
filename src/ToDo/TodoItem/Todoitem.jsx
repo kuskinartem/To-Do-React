@@ -1,34 +1,23 @@
-import { useContext, useState } from 'react';
-import Context from '../context';
-import done from '../img/done.svg';
-import cancel from '../img/cancel.svg';
-import Delete from '../img/delete.svg';
-import edit from '../img/edit.svg'
-import { changeText } from '../request/TaskServes'
-
-
-
-
-const styles = {
-  li: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '.4rem 1rem',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    marginBottom: '.5rem',
-  },
-  input: {
-    marginRight: '1rem'
-  }
-
-}
+import { useState } from 'react';
+import done from '../../img/done.svg';
+import cancel from '../../img/cancel.svg';
+import onDelete from '../../img/delete.svg';
+import edit from '../../img/edit.svg'
+import { changeText, deleteTask } from '../../request/TaskServes'
+import './style.scss'
 
 const Todoitem = ({ todo, index, onChange, setTodo, setTodos, todos }) => {
-  const { removeTodo } = useContext(Context)
-  const classes = [];
 
+  const  removeTodo = async (_id) => {
+    try {
+    await deleteTask(_id);
+  setTodos(todos.filter(todo => todo._id !== _id));
+     } catch(error) {
+       console.error( error);
+     }
+  }
+  
+  const classes = [];   //Если isCheck  измениться тогда измениться класс на done 
   if (todo.isCheck) {
     classes.push('done')
   }
@@ -60,13 +49,14 @@ const Todoitem = ({ todo, index, onChange, setTodo, setTodos, todos }) => {
         return todo;
       }))
       setIsEditing(false)
-    } catch {
-      console.error('change error');
+    } catch(error) {
+      console.error(error);
     }
   }
 
+
   return (
-    <li style={styles.li} id={todo._id}>
+    <li id={todo._id}>
 
       <div>
         <div>
@@ -96,9 +86,9 @@ const Todoitem = ({ todo, index, onChange, setTodo, setTodos, todos }) => {
                   <input
                     type="checkbox"
                     checked={todo.isCheck}
-                    style={styles.input}
+                    
                     onChange={() => onChange(todo._id, todo.isCheck)} />
-                  <strong>{index + 1}</strong>
+                  <strong>{index + 1 + ')'}</strong>
                   &nbsp;
                   {todo.text}
                 </span>
@@ -112,7 +102,7 @@ const Todoitem = ({ todo, index, onChange, setTodo, setTodos, todos }) => {
           <img src={edit} alt='' />
         </button>
         <button className='rm' onClick={() => removeTodo(todo._id)}>
-          <img src={Delete} alt='' />
+          <img src={onDelete} alt='' />
         </button>
       </div>
     </li>
