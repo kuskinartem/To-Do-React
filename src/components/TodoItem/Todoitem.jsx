@@ -40,7 +40,7 @@ const Todoitem = ({
       );
       setIsEditing(false);
     } catch (error) {
-      setError(error);
+      setError('doneEditTask error');
     }
   };
 

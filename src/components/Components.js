@@ -17,14 +17,14 @@ const Components = () => {
   useEffect(() => {
     getAllTask()
 
-  })
+  }, [])
 
   const getAllTask = async () => {
     try {
       const response = await getTask();
       setTodos(response.data);
     } catch (error) {
-      setError(error);
+      setError('getAllTask erorr');
     }
   }
 
@@ -51,7 +51,7 @@ const Components = () => {
         return todo;
       }))}
     } catch (error) {
-      setError(error);
+      setError('changeIsCheck erorr');
     }
     }
 
@@ -60,7 +60,7 @@ const Components = () => {
           await deleteTask(_id);
           setTodos(todos.filter((todo) => todo._id !== _id));
         } catch (error) {
-          setError(error);
+          setError('deletion error');
         }
       };
 
