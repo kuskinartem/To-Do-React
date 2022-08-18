@@ -1,4 +1,4 @@
-li {
+.li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -6,8 +6,8 @@ li {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: .5rem;
+  
+  .doneTask {
+    display: flex;
   }
-  input {
-    margin-right: 1rem
-  }
-
+}
