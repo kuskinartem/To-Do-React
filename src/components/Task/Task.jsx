@@ -8,7 +8,6 @@ const Task = ({ todo, changeIsCheck, isCheck }) => {
         checked={todo.isCheck}
         onChange={() => changeIsCheck(isCheck)}
       />
-      &nbsp;
       {todo.text}
     </span>
   );
