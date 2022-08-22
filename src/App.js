@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import Components from "./components/MainPaege";
+import MainPage from "./components/MainPage/MainPage";
 const App = () => {
-
   return (
     <Routes>
-      <Route path='/' element={<Components />} />
+      <Route path='/' element={<MainPage />} />
     </Routes>
   )
 }

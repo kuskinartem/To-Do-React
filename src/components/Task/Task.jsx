@@ -1,13 +1,12 @@
 import "../Task/style.scss";
 
-const Task = ({ todo, onChange }) => {
-
+const Task = ({ todo, changeIsCheck, isCheck }) => {
   return (
-    <span className={todo.isCheck ? 'done' : 'text'}>
+    <span className={todo.isCheck ? "done-task" : "text"}>
       <input
         type="checkbox"
         checked={todo.isCheck}
-        onChange={() => onChange(todo._id, todo.isCheck)}
+        onChange={() => changeIsCheck(isCheck)}
       />
       &nbsp;
       {todo.text}
