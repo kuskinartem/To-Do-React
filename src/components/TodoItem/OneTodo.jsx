@@ -9,7 +9,7 @@ import Edit from "../EditTask/Edit";
 
 const OneTodo = ({ todo, setTodos, todos, setError, _id }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentText, setCurrentText] = useState({});
+  const [currentText, setCurrentText] = useState('');
 
   const handleEditInputChange = (e) => {
     setCurrentText({ ...currentText, text: e.target.value });
