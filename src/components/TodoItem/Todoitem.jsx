@@ -29,7 +29,9 @@ const Todoitem = ({
 
   const doneEditTask = async (_id) => {
     try {
-      const resp = await changeText(_id, currentTodo);
+      const resp = await changeText(_id, currentTodo, {
+        text: currentTodo.text,
+      });
       setTodos(
         todos.map((todo) => {
           if (todo._id === _id) {
@@ -40,7 +42,7 @@ const Todoitem = ({
       );
       setIsEditing(false);
     } catch (error) {
-      setError('doneEditTask error');
+      setError("doneEditTask error");
     }
   };
 

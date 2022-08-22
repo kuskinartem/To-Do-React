@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Components from "./components/Components";
+import Components from "./components/MainPaege";
 const App = () => {
 
   return (
