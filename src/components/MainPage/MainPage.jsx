@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import OneTodo from "../TodoItem/OneTodo";
 import AddTodo from "../AddTodo/AddTodo";
-import { getTask, addTasks, deleteTasks } from "../../service/taskServes";
+import DeleteAllTasks from "../DeleteAllTask/DeleteAllTasks";
+import { getTask, addTasks } from "../../service/taskServes";
 import "./style.scss";
 
 const MainPage = () => {
@@ -9,38 +10,25 @@ const MainPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getAllTask();
+    getAllTasks();
   });
 
-  const getAllTask = async () => {
+  const getAllTasks = async () => {
     try {
-      const response = await getTask();
+      const response = await getTask();  
+      if (response.statusText === "OK") {
       setTodos(response.data);
+      }
     } catch (error) {
-      setError("getAllTask erorr");
+      setError("Task output error");
     }
   };
 
   const addTask = async (text) => {
-    try {
       const response = await addTasks(text);
       if (response.statusText === "OK") {
         setTodos(response.data);
       }
-    } catch (error) {
-      setError("error");
-    }
-  };
-
-  const deleteAllTask = async () => {
-    try {
-      const response = await deleteTasks();
-      if (response.statusText === "OK") {
-        setTodos(response.data);
-      }
-    } catch (error) {
-      setError("error DeleteAllTask");
-    }
   };
 
   return (
@@ -49,10 +37,7 @@ const MainPage = () => {
       <AddTodo
         onCreate={addTask}
         errorMessage={error}
-        error={error}
-        setError={setError}
       />
-
       {todos.length ? (
         <ul>
           {todos.map((todo) => (
@@ -70,9 +55,10 @@ const MainPage = () => {
       ) : (
         <p>No ToDo</p>
       )}
-      <button onClick={deleteAllTask}>DeleteAll</button>
+      <DeleteAllTasks setTodos={setTodos} setError={setError}/>
     </div>
   );
 };
 
 export default MainPage;
+

@@ -1,15 +1,17 @@
 import { changeText } from "../../service/taskServes";
 import { useState } from "react";
-import { changeCheckbox, deleteTask } from "../../service/taskServes";
+import { changeCheckbox } from "../../service/taskServes";
 import Task from "../Task/Task";
-import onDelete from "../../img/delete.svg";
-import edit from "../../img/edit.svg";
 import "./style.scss";
-import Edit from "../EditTask/Edit";
+import EditTask from "../EditTask/EditTask";
 
 const OneTodo = ({ todo, setTodos, todos, setError, _id }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentText, setCurrentText] = useState('');
+  const [currentText, setCurrentText] = useState("");
+
+  const setEditing = (isEditing) => {
+    isEditing = false;
+  };
 
   const handleEditInputChange = (e) => {
     setCurrentText({ ...currentText, text: e.target.value });
@@ -62,46 +64,28 @@ const OneTodo = ({ todo, setTodos, todos, setError, _id }) => {
     }
   };
 
-  const removeTodo = async (_id) => {
-    try {
-      await deleteTask(_id);
-      setTodos(todos.filter((todo) => todo._id !== _id));
-    } catch (error) {
-      setError("deletion error");
-    }
-  };
-
   return (
     <li _id={todo._id} text={todo.text} className="onTask">
-      <div>
-        {isEditing ? (
-          <Edit
-            todo={todo}
-            setIsEditing={setIsEditing}
-            doneEditTask={doneEditTask}
-            handleEditInputChange={handleEditInputChange}
-            currentTodo={currentText}
-            _id={todo._id}
-            text={todo.text}
-          />
-        ) : (
-          <div>
-            <Task
-              todo={todo}
-              changeIsCheck={changeIsCheck}
-              isCheck={todo.isCheck}
-            />
-          </div>
-        )}
-      </div>
-      <div className="button">
-        <button onClick={handleEditClick}>
-          <img src={edit} alt="" />
-        </button>
-        <button className="deleteTask" onClick={() => removeTodo(_id)}>
-          <img src={onDelete} alt="" />
-        </button>
-      </div>
+      {isEditing ? (
+        <EditTask
+          todo={todo}
+          setEditing={setEditing}
+          doneEditTask={doneEditTask}
+          handleEditInputChange={handleEditInputChange}
+          currentText={currentText}
+          _id={todo._id}
+          text={todo.text}
+        />
+      ) : (
+        <Task
+          todo={todo}
+          changeIsCheck={changeIsCheck}
+          isCheck={todo.isCheck}
+          handleEditClick={handleEditClick}
+          _id={todo._id}
+          todos={todos}
+        />
+      )}
     </li>
   );
 };

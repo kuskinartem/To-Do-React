@@ -1,23 +1,25 @@
 import { useState } from "react";
 import ShowError from "../Error/Error";
 
-const AddTodo = ({ onCreate, error, setError }) => {
+const AddTodo = ({ onCreate }) => {
   const [text, setText] = useState("");
+  const [error, setError] = useState("")
 
-  const handler = () => {
+  const  handlerAddTask = async () => {
     try {
-      text.trim();
-      onCreate(text);
+      if (text.trim()) {
+     await onCreate(text);
       setText("");
+      }
     } catch (error) {
-      setError("Faile Add");
+      setError("Error in adding a task");
     }
   };
 
   return (
     <div>
       <ShowError errorMessage={error} />
-      <form onSubmit={handler}>
+      <form onSubmit={handlerAddTask}>
         <input value={text} onChange={(event) => setText(event.target.value)} />
         <button type="submit">Add</button>
       </form>
@@ -26,3 +28,4 @@ const AddTodo = ({ onCreate, error, setError }) => {
 };
 
 export default AddTodo;
+
