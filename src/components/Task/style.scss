@@ -1,0 +1,14 @@
+.main-block {
+  display: flex;
+
+  .done-task {
+    text-decoration: line-through;
+    opacity: 0.3;
+    margin-left: -237px;
+  }
+
+  .text {
+    margin-left: -237px;
+  }
+  
+}
